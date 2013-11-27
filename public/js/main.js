@@ -1,3 +1,5 @@
+var game = new Game();
+
 window.requestAnimFrame = (function(){
   return  window.requestAnimationFrame       || 
   window.webkitRequestAnimationFrame || 
@@ -20,6 +22,7 @@ var add_event_listeners = function() {
 
 var init_browser = function() {
   // console.log('debug: init_browser called');
+  // context.font = "16px Arial";
 	body = document.getElementsByTagName("body")[0];
 	canvas = document.createElement("canvas");
 	canvas.id = "canvas";
@@ -30,28 +33,18 @@ var init_browser = function() {
   add_event_listeners();
   horizon = (canvas.height / 2);
   center_axis = (canvas.width / 2);
-  // context.font = "16px Arial";
-};
-
-var init_game = function() {
 };
 
 var init = function() {
   init_browser();
-  init_game();
-};
-
-var render = function() {
-};
-
-var draw = function() {
+  game.init();
 };
 
 var loop = function() {
   requestAnimFrame(loop);
 	context.clearRect(0, 0, canvas.width, canvas.height);
-  render();
-  draw();
+  game.render();
+  game.draw();
 };
 
 var start = function() {
