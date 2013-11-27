@@ -7,11 +7,15 @@
     "express": "*",
     "consolidate": "~0.9.1",
     "path": "~0.4.9",
-    "mustache": "~0.7.2",
+    "mustache": "~0.7.2"
   },
   "scripts": {
     "start" : "node app.js",
     "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bttf/node-canvas-hotplate.git"
   },
   "keywords": [
     "game",
@@ -21,5 +25,8 @@
     "javascript"
   ],
   "author": "bttf",
-  "license": "BSD-2-Clause"
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/bttf/node-canvas-hotplate/issues"
+  }
 }
