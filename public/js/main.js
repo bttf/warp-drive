@@ -37,14 +37,14 @@ var init_browser = function() {
 
 var init = function() {
   init_browser();
-  game.init();
+  game.init(canvas);
 };
 
-var loop = function() {
+var loop = function(time) {
   requestAnimFrame(loop);
 	context.clearRect(0, 0, canvas.width, canvas.height);
-  game.render();
-  game.draw();
+  game.render(time);
+  game.draw(context);
 };
 
 var start = function() {
