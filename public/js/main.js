@@ -18,6 +18,7 @@ var add_event_listeners = function() {
   // body.addEventListener("mousedown", mouse_down, false);
   // body.addEventListener("mouseup", mouse_up, false);
   // body.addEventListener("mousemove", mouse_move, false);
+  body.addEventListener("DOMMouseScroll", mouse_wheel, false);
 };
 
 var init_browser = function() {
@@ -26,8 +27,8 @@ var init_browser = function() {
 	body = document.getElementsByTagName("body")[0];
 	canvas = document.createElement("canvas");
 	canvas.id = "canvas";
-	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight - 5;
+	canvas.width = window.innerWidth - 25;
+	canvas.height = window.innerHeight - 25;
 	context = canvas.getContext('2d');
 	body.appendChild(canvas);
   add_event_listeners();
@@ -42,7 +43,6 @@ var init = function() {
 
 var loop = function(time) {
   requestAnimFrame(loop);
-	context.clearRect(0, 0, canvas.width, canvas.height);
   game.render(time);
   game.draw(context);
 };
@@ -51,6 +51,18 @@ var start = function() {
   init();
   loop();
 };
+
+var key_down = function(e) {
+};
+
+var key_up = function(e) {
+};
+
+var mouse_wheel = function(e) {
+  game.mouse_wheel(e);
+};
+
+
 
 window.onload = start;
 

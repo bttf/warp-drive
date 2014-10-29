@@ -1,7 +1,7 @@
 {
-  "name": "node-canvas-hotplate",
+  "name": "warp-drive",
   "version": "0.0.0",
-  "description": "What you need to get going with an HTML5/Canvas game via node.js",
+  "description": "",
   "main": "app.js",
   "dependencies": {
     "express": "*",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bttf/node-canvas-hotplate.git"
+    "url": "https://github.com/bttf/warp-drive"
   },
   "keywords": [
     "game",
@@ -27,6 +27,6 @@
   "author": "bttf",
   "license": "BSD-2-Clause",
   "bugs": {
-    "url": "https://github.com/bttf/node-canvas-hotplate/issues"
+    "url": "https://github.com/bttf/warp-drive/issues"
   }
 }
