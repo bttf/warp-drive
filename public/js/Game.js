@@ -28,56 +28,57 @@ Game.prototype.mouse_wheel = function(e) {
   }
 
   if (delta >= 0) {
-    // raise warp factor
     this.stars.increaseWarpIndex();
   }
   else {
-    // decrease warp factor
     this.stars.decreaseWarpIndex();
   }
 };
 
 function Stars() {
   this.stars = [];
-  this.warpIndex = 0;
+  this.warpIndex = 1;
   this.transitionSpeed = 2;
 
   this.warpFactor = {
-    0: { speed: 0.5,
+    0: { speed: 0,
          opacity: 1 },
 
-    1: { speed: 1,
+    1: { speed: 0.5,
          opacity: 1 },
 
-    2: { speed: 2,
+    2: { speed: 1,
          opacity: 1 },
 
-    3: { speed: 8,
+    3: { speed: 2,
+         opacity: 1 },
+
+    4: { speed: 8,
          opacity: 0.4 },
 
-    4: { speed: 10,
+    5: { speed: 10,
          opacity: 0.35 },
 
-    5: { speed: 15,
+    6: { speed: 15,
          opacity: 0.3 },
          
-    6: { speed: 20,
+    7: { speed: 20,
          opacity: 0.23 },
 
-    7: { speed: 28,
+    8: { speed: 28,
          opacity: 0.2 },
 
-    8: { speed: 32,
+    9: { speed: 32,
          opacity: 0.2 },
 
-    9: { speed: 38,
+    10: { speed: 38,
          opacity: 0.15 },
 
-    10: { speed: 44,
+    11: { speed: 44,
           opacity: 0.1 },
 
-    11: { speed: 64,
-          opacity: 0.05 }
+    12: { speed: 64,
+          opacity: 0.05 },
   }
 }
 
@@ -115,7 +116,11 @@ Stars.prototype = {
 
       this.stars[i][2] -= this.speed;
       if (this.stars[i][2] > this.z) { this.stars[i][2] -= this.z; } 
-      if (this.stars[i][2] < 0) { this.stars[i][2] += this.z; }
+      if (this.stars[i][2] < 0) { 
+        this.stars[i][2] += this.z; 
+        this.stars[i][0] = Math.random() * this.w * 2 - this.x * 2;
+        this.stars[i][1] = Math.random() * this.h * 2 - this.y * 2;
+      }
 
       this.stars[i][3] = this.x + (this.stars[i][0] / this.stars[i][2]) * this.ratio;
       this.stars[i][4] = this.y + (this.stars[i][1] / this.stars[i][2]) * this.ratio;
@@ -126,6 +131,9 @@ Stars.prototype = {
         this.speed += 0.1;
       else if (this.speed > this.warpFactor[this.warpIndex].speed + 0.1)
         this.speed -= 0.1;
+
+      if (this.warpFactor[this.warpIndex].speed === 0 && this.speed < 0.1) 
+        this.speed = 0.0;
     }
 
     if (this.opacity < this.warpFactor[this.warpIndex].opacity - 0.01)
@@ -137,34 +145,65 @@ Stars.prototype = {
   draw: function(context) {
     context.fillStyle = 'rgba(0, 0, 0, ' + this.opacity + ')';
     context.fillRect(0, 0, this.w, this. h);
+
     for (var i = 0; i < this.stars.length; i++) {
-      if (this.stars[i][5] > 0 &&
-          this.stars[i][5] < this.w &&
-          this.stars[i][6] > 0 &&
-          this.stars[i][6] < this.h) {
-        context.strokeStyle = 'white';
-        context.lineWidth = (1 - this.color_ratio * this.stars[i][2]) * 2;
-        context.beginPath();
-        context.moveTo(this.stars[i][5], this.stars[i][6]);
-        context.lineTo(this.stars[i][3], this.stars[i][4]);
-        context.stroke();
-        context.closePath();
+
+      if (this.stars[i][5] > 0 && this.stars[i][5] < this.w && this.stars[i][6] > 0 && this.stars[i][6] < this.h) {
+        if (this.speed > 0) {
+          context.strokeStyle = 'white';
+          context.lineWidth = (1 - this.color_ratio * this.stars[i][2]) * 2;
+          context.beginPath();
+          context.moveTo(this.stars[i][5], this.stars[i][6]);
+          context.lineTo(this.stars[i][3], this.stars[i][4]);
+          context.stroke();
+          context.closePath();
+        }
+        else {
+          // to make stars more visible when speed is 0
+          var a3 = this.stars[i][3] + (300 * (1 / this.z));
+          var b3 = this.stars[i][4] + (350 * (1 / this.z));
+
+          context.strokeStyle = 'white';
+          context.lineWidth = (1 - this.color_ratio * this.stars[i][2]) * 2;
+          context.beginPath();
+          context.moveTo(this.stars[i][5], this.stars[i][6]);
+          context.lineTo(a3, b3);
+          context.stroke();
+          context.closePath();
+        }
+
+        // debug
+        //
+        // if (i === 500) {
+        //   var a1 = Math.round(this.stars[i][5]);
+        //   var b1 = Math.round(this.stars[i][6]);
+        //   var a2 = Math.round(this.stars[i][3]);
+        //   var b2 = Math.round(this.stars[i][4]);
+        //   context.font = '10px arial';
+        //   context.fillStyle = 'red';
+        //   context.fillText('(' + a1 + ', ' + b1 + ') to (' + a2 + ', ' + b2 + ')', 10, 40);
+        //   context.fillText('(' + a1 + ', ' + b1 + ') to (' + a3 + ', ' + b3 + ')', 10, 50);
+        // }
       }
     }
+
     context.font = '10px arial';
     context.fillStyle = 'red';
     switch(this.warpIndex) {
       case 0:
-        context.fillText('1/4 IMPULSE', 10, 10);
+        context.fillText('FULL STOP', 10, 10);
         break;
       case 1:
-        context.fillText('1/2 IMPULSE', 10, 10);
+        context.fillText('1/4 IMPULSE', 10, 10);
         break;
       case 2:
+        context.fillText('1/2 IMPULSE', 10, 10);
+        break;
+      case 3:
         context.fillText('FULL IMPULSE', 10, 10);
         break;
       default:
-        var str = 'WARP FACTOR ' + (this.warpIndex - 2);
+        var str = 'WARP FACTOR ' + (this.warpIndex - 3);
         context.fillText(str, 10, 10);
       break;
     }
@@ -174,7 +213,7 @@ Stars.prototype = {
   },
 
   increaseWarpIndex: function() {
-    if (this.warpIndex < 11)
+    if (this.warpIndex < 12)
       this.warpIndex++;
   },
 
